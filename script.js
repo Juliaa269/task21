@@ -40,9 +40,10 @@ $(() => {
     }
 
     function onEditBtnCLick() {
-        const $element = $(this);
-        const contactItem = $element.parent().parent().data('id')
-        editContact(contactItem);
+        const id = $(this).parent().parent().data('id')
+        selectedId = id;
+        loadFormData(id);
+        openModal();
     }
 
     function onDelBtnCLick() {
@@ -83,7 +84,7 @@ $(() => {
             surname: $contactSurnameInput.val(),
         };
         if(selectedId){ 
-            editContact(contactItem);
+            editContact(selectedId, contactItem);
             selectedId = null;
         } else { 
             addContact(contactItem);
@@ -119,16 +120,14 @@ $(() => {
         $contactSurnameInput.val('');
     }
 
-    function editContact(id) {
+    function loadFormData(id) {
         const contactItem = listAddedContacts.find((el) => el.id == id);
-        openModal();
         $contactNameInput.val(contactItem.name);
         $contactSurnameInput.val(contactItem.surname);
         $contactPhoneInput.val(contactItem.phone);
-        selectedId = id; 
     }
 
-    function updateContactOnServer(contactItem, id) {
+    function editContact(id, contactItem) {
         return fetch(CONTACTS_URL + id, {
             method: 'PUT',
             body: JSON.stringify(contactItem),

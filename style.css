@@ -16,13 +16,13 @@
 }
 
 .contact-item {
-    color: #555;
+    color: black;
     border: 1px solid #bbb;
     cursor: pointer;
     padding: 10px 20px;
     margin: 5px 0;
     font-size: 20px;
-    background-color: lightyellow;
+    background: #F8E391;
 }
 
 .contact-item.done {
@@ -32,8 +32,8 @@
 .contact-item {
     display: flex;
     justify-content: space-between;
-    margin-right: 400px;
-    margin-left: 400px;
+    margin-right: 500px;
+    margin-left: 500px;
 }
 
 .add-btn {
@@ -46,12 +46,13 @@
 .container-of-items {
     display: flex;
     justify-content: space-between;
-    margin-right: 400px;
-    margin-left: 400px;
+    margin-right: 500px;
+    margin-left: 500px;
     border: 1px solid #223311;
     padding: 10px 20px;
-    background-color: bisque;
     font-size: larger;
+    background: #A65F00;
+    color: blanchedalmond;
 }
 
 .btn {
@@ -67,4 +68,11 @@ fieldset {
     margin-bottom: 20px;
     /* width: 100%; */
     padding: 10px;
+}
+
+.submit-btn {
+    padding: 20px;
+    background-color: #A65F00;
+    font-size: larger;
+    color: blanchedalmond;
 }
