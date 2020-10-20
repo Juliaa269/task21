@@ -18,15 +18,9 @@
 .contact-item {
     color: black;
     border: 1px solid #bbb;
-    cursor: pointer;
-    padding: 10px 20px;
     margin: 5px 0;
     font-size: 20px;
     background: #F8E391;
-}
-
-.contact-item.done {
-    background-color: lightgreen;
 }
 
 .contact-item {
@@ -49,15 +43,13 @@
     margin-right: 500px;
     margin-left: 500px;
     border: 1px solid #223311;
-    padding: 10px 20px;
-    font-size: larger;
     background: #A65F00;
     color: blanchedalmond;
 }
 
 .btn {
     margin-left: 30px;
-    display: block
+    cursor: pointer;
 }
 
 fieldset {
@@ -66,8 +58,11 @@ fieldset {
 
 .inputs {
     margin-bottom: 20px;
-    /* width: 100%; */
     padding: 10px;
+}
+
+.itemsName {
+    font-size: larger;
 }
 
 .submit-btn {
@@ -75,4 +70,10 @@ fieldset {
     background-color: #A65F00;
     font-size: larger;
     color: blanchedalmond;
+}
+
+td {
+    width: 200px;
+    text-align: center;
+    padding: 10px;
 }

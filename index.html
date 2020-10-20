@@ -20,13 +20,14 @@
         <title>Contact List modal</title>
     </head>
     <body>
-        <div class="container">
-            <div class="container-of-items">
-                <span class="items">Имя</span>
-                <span class="items">Фамилия</span>
-                <span class="items">Телефон</span>
-                <span class="items">Действия</span>
-            </div>
+        <table class="container">
+            <tr class="container-of-items">
+                <td class="itemsName">Имя</td>
+                <td class="itemsName">Фамилия</td>
+                <td class="itemsName">Телефон</td>
+                <td class="itemsName">Действия</td>
+            </tr>
+            </table>
             <div id="contactList" class="contact-list u-full-width"></div>
             <div class="add-btn">
                 <input 
@@ -73,15 +74,17 @@
         </div>
 
         <script type="text/template" id="contactItemTemplate">
-            <div class="contact-item u-full-width" data-id="{{id}}">
-                <div class="items">{{name}}</div>
-                <div class="items">{{surname}}</div>
-                <div class="items">{{phone}}</div>
-                <div class="action">
-                    <div class="edit-btn btn">&#9998;Edit</div>
-                    <div class="delete-btn btn">&#10008;Delete</div>
-                </div>
-            </div>
+            <table>
+                <tr class="contact-item u-full-width" data-id="{{id}}">
+                    <td class="items">{{name}}</td>
+                    <td class="items">{{surname}}</td>
+                    <td class="items">{{phone}}</td>
+                    <td class="action">
+                        <span class="edit-btn btn">&#9998;Edit</span>
+                        <span class="delete-btn btn">&#10008;Delete</span>
+                    </td>
+                </tr>
+            </table>
         </script>
     </body>
 </html>
