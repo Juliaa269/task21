@@ -3,35 +3,53 @@ $(() => {
     const DELETE_BTN_CLASS = 'delete-btn';
     const EDIT_BTN_CLASS = 'edit-btn';
 
-    const $addContactForm = $('#addContactForm');
-    const $contactNameInput = $('#contactNameInput');
-    const $contactSurnameInput = $('#contactSurnameInput');
-    const $contactPhoneInput = $('#contactPhoneInput');
+    const $addContactBtn = $('.submit-btn');
+    const $contactNameInput = $('#contactName');
+    const $contactSurnameInput = $('#contactSurname');
+    const $contactPhoneInput = $('#contactPhoneNumber');
     const $contactList = $('#contactList');
     const contactItemTemplate = $('#contactItemTemplate').html();
 
     let listAddedContacts = [];
+    let selectedId = null;
 
-    $addContactForm.on('submit', onAddContactFormSubmit);
+    const $dialog = $('#dialog-form').dialog({
+        autoOpen: false,
+        height: 350,
+        width: 350,
+        modal: true,
+        buttons: {
+          Save: () => {
+            submitForm();
+          },
+          Cancel: () => {
+            $dialog.dialog('close');
+          },
+        },
+      });
+
+    $addContactBtn.on('click', () => openModal());
+
     $contactList.on('click', '.' + EDIT_BTN_CLASS, onEditBtnCLick);
     $contactList.on('click', '.' + DELETE_BTN_CLASS, onDelBtnCLick);
 
     init();
 
-    function onAddContactFormSubmit(e) {
-        e.preventDefault();
-
-        submitForm();
+    function openModal(){
+        return $dialog.dialog('open');
     }
 
     function onEditBtnCLick() {
         const $element = $(this);
-        updateContact($element.parent().parent().data('id'));
+        const contactItem = $element.parent().parent().data('id')
+        editContact(contactItem);
     }
 
     function onDelBtnCLick() {
+        // e.stopProragation();
         const $element = $(this);
-        deleteContact($element.parent().parent().data('id'));
+        const id = $element.parent().parent().data('id');
+        deleteContact(id);
     }
 
     function init() {
@@ -46,41 +64,38 @@ $(() => {
     }
 
     function renderList(data) {
-        $contactList.html(data.map(getFormHtml).join(''));
+        $contactList.empty();
+        $contactList.html(data.map(getFormHtml).join('\n'));
     }
 
-    function getFormHtml(contact) {
+    function getFormHtml(contactItem) {
         return contactItemTemplate 
-            .replace('{{id}}', contact.id)
-            .replace('{{name}}', contact.name)
-            .replace('{{surname}}', contact.surname)
-            .replace('{{phone}}', contact.phone);
+            .replace('{{id}}', contactItem.id)
+            .replace('{{name}}', contactItem.name)
+            .replace('{{phone}}', contactItem.phone)
+            .replace('{{surname}}', contactItem.surname);
     }
 
     function submitForm() {
-        if (formIsValid()){
-            const contactItem = {
-                name: $contactNameInput.val(),
-                surname: $contactSurnameInput.val(),
-                phone: $contactPhoneInput.val(),
-            };
-
+        const contactItem = {
+            name: $contactNameInput.val(),
+            phone: $contactPhoneInput.val(),
+            surname: $contactSurnameInput.val(),
+        };
+        if(selectedId){ 
+            editContact(contactItem);
+            selectedId = null;
+        } else { 
             addContact(contactItem);
-            clearForm();
-
-        } else {
-            alert('Введите верные данные!')
         }
+        clearForm();
+        $dialog.dialog('close');
     }
 
-    function formIsValid(){
-        return $contactNameInput.val() !== "" && $contactSurnameInput.val() !== "" && +$contactPhoneInput.val();
-    }
-
-    function addContact(contact) {
+    function addContact(contactItem) {
         return fetch(CONTACTS_URL, {
             method: 'POST',
-            body: JSON.stringify(contact),
+            body: JSON.stringify(contactItem),
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -99,18 +114,27 @@ $(() => {
     }
 
     function clearForm(){
-        $contactNameInput.val("");
-        $contactSurnameInput.val("");
-        $contactPhoneInput.val("");
+        $contactNameInput.val('');
+        $contactPhoneInput.val('');
+        $contactSurnameInput.val('');
     }
 
-    // function updateContact(id, contactItem) {
-    //     fetch(CONTACTS_URL + id, {
-    //         method: 'PUT',
-    //         body: JSON.stringify(contactItem),
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //     }).then(getList); 
-    // }
+    function editContact(id) {
+        const contactItem = listAddedContacts.find((el) => el.id == id);
+        openModal();
+        $contactNameInput.val(contactItem.name);
+        $contactSurnameInput.val(contactItem.surname);
+        $contactPhoneInput.val(contactItem.phone);
+        selectedId = id; 
+    }
+
+    function updateContactOnServer(contactItem, id) {
+        return fetch(CONTACTS_URL + id, {
+            method: 'PUT',
+            body: JSON.stringify(contactItem),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(getList);
+    }
 });
